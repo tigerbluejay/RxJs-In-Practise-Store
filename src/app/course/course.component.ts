@@ -58,6 +58,23 @@ export class CourseComponent implements OnInit, AfterViewInit {
                 first()
             );
 
+        // withLatestFrom rxjs operator
+        // The withLatestFrom operator, is useful when dealing with long running observables
+        // we call the loadLessons() method which will get us an observable after making a backend call
+        // after we get the lessons, we can combine it with withLatestFrom the long running course$ observable
+        // so we obtain the course data, combining observables together by taking the latest value provided by the course observable
+        // this emits a tuple containing two things: 1) the lessons (source) observable output, and 
+        // 2) the latest value (course) from the course observable
+        // so withLatestFrom is about combining the current value of an observable with the latest value emitted by one or more 
+        // observables (in this case only one - the course observable)
+        this.loadLessons()
+            .pipe(
+                withLatestFrom(this.course$)
+            )
+            .subscribe(([lessons, course]) => {
+                console.log("lessons", lessons);
+                console.log("course", course);
+            })
 
     }
 
@@ -90,7 +107,8 @@ export class CourseComponent implements OnInit, AfterViewInit {
 
 
 
-
+// remember that to start to start the node project you do "npm start" -> this will load in a browser in localhost:4200 or something like that
+// and to start the server you do "npm run server" -> this will start the server, i think it may be accessible in localhost:9000 in the browser, or something like that
 
 
 
